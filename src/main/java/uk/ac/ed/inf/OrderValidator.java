@@ -1,6 +1,5 @@
 package uk.ac.ed.inf;
 
-import uk.ac.ed.inf.ilp.data.CreditCardInformation;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 import uk.ac.ed.inf.ilp.interfaces.OrderValidation;
@@ -8,14 +7,23 @@ import uk.ac.ed.inf.ilp.constant.*;
 import uk.ac.ed.inf.ilp.data.*;
 import uk.ac.ed.inf.validation.CardValidator;
 import uk.ac.ed.inf.validation.PizzaValidator;
+import uk.ac.ed.inf.validation.RestaurantValidator;
 
-/**
- * a sample order validator which does nothing
- */
 public class OrderValidator implements OrderValidation {
     @Override
     public Order validateOrder(Order orderToValidate, Restaurant[] definedRestaurants) {
-        OrderValidationCode status = new CardValidator().validateCreditNumber(orderToValidate.getCreditCardInformation());
+        OrderValidationCode creditStatus = new CardValidator().cardValidator(orderToValidate.getCreditCardInformation());
+        if (creditStatus != OrderValidationCode.NO_ERROR) {
+            orderToValidate.setOrderValidationCode(creditStatus);
+            return orderToValidate;
+        }
+
+        OrderValidationCode pizzaStatus = new PizzaValidator().pizzaValidator(orderToValidate.getPizzasInOrder(), orderToValidate.getPriceTotalInPence(), definedRestaurants);
+        if (pizzaStatus != OrderValidationCode.NO_ERROR) {
+            orderToValidate.setOrderValidationCode(pizzaStatus);
+            return orderToValidate;
+        }
+
         return orderToValidate;
     }
 

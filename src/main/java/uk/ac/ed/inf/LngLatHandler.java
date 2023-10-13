@@ -14,6 +14,7 @@ public class LngLatHandler implements LngLatHandling {
 
     @Override
     public boolean isCloseTo(LngLat startPosition, LngLat otherPosition) {
+
         return false;
     }
 
