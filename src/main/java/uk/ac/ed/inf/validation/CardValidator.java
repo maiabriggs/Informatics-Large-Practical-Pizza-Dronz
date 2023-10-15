@@ -51,7 +51,7 @@ public class CardValidator {
      * */
     public OrderValidationCode validateCreditCVV(String cvv) {
         if (cvv.length() == 3) {
-            for (int i = 0; i < cvv.length() - 1; i++) {
+            for (int i = 0; i < cvv.length(); i++) {
                 if (!Character.isDigit(cvv.charAt(i))) {
                     return OrderValidationCode.CVV_INVALID;
                 }
@@ -71,14 +71,14 @@ public class CardValidator {
 
         //Split the expiry date by the backslash
         String[] expiry = date.split("/");
-        if (Integer.parseInt(expiry[1]) == currentYear) {
-            if (Integer.parseInt(expiry[0]) < currentMonth) {
-                return OrderValidationCode.EXPIRY_DATE_INVALID;
-            }
-        }
-        else if (Integer.parseInt(expiry[1]) < currentYear) {
+        if (Integer.parseInt(expiry[1] + 2000) < currentYear) {
             return OrderValidationCode.EXPIRY_DATE_INVALID;
         }
+        else if (Integer.parseInt(expiry[0] + 2000) == currentYear) {
+                if (Integer.parseInt(expiry[1]) < currentMonth) {
+                    return OrderValidationCode.EXPIRY_DATE_INVALID;
+                }
+            }
         return OrderValidationCode.NO_ERROR;
 
 

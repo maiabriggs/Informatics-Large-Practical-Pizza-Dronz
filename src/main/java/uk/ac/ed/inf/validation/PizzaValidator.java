@@ -6,6 +6,9 @@ import uk.ac.ed.inf.ilp.data.CreditCardInformation;
 import uk.ac.ed.inf.ilp.data.Pizza;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PizzaValidator {
 
     /** Checks all credit card validation
@@ -37,7 +40,7 @@ public class PizzaValidator {
             pizzaTotal += pizzas[i].priceInPence();
         }
 
-        if (pizzaTotal != (totalPrice - 1)) {
+        if (pizzaTotal != (totalPrice - 100)) {
             return OrderValidationCode.TOTAL_INCORRECT;
         }
         else {
@@ -51,22 +54,23 @@ public class PizzaValidator {
      * @return order validation status
      */
     private OrderValidationCode validatePizzas(Pizza[] pizzas, Restaurant[] restaurants) {
+        List<Boolean> inMenu = new ArrayList<>();
         for (int i = 0; i < pizzas.length; i++) {
-            boolean inMenu = false;
             for (int r = 0; r < restaurants.length; r++) {
-                Pizza[] menu = restaurants[i].menu();
+                Pizza[] menu = restaurants[r].menu();
                 for (int m = 0; m < menu.length; m++) {
-                    if (menu[m].equals(pizzas[i])) {
-                        inMenu = true;
-                        break;
+                    if (menu[m].name().equals(pizzas[i].name())) {
+                        inMenu.add(true);
                     }
                 }
             }
-            if (!inMenu) {
-                return OrderValidationCode.PIZZA_NOT_DEFINED;
-            }
         }
-        return  OrderValidationCode.NO_ERROR;
+        if (inMenu.size() == pizzas.length) {
+            return  OrderValidationCode.NO_ERROR;
+        }
+        else {
+            return  OrderValidationCode.PIZZA_NOT_DEFINED;
+        }
     }
 
 

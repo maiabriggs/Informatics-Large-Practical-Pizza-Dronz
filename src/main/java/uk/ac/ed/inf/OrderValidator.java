@@ -24,6 +24,13 @@ public class OrderValidator implements OrderValidation {
             return orderToValidate;
         }
 
+        OrderValidationCode restStatus = new RestaurantValidator().restaurantValidator(definedRestaurants, orderToValidate.getPizzasInOrder(), orderToValidate.getOrderDate());
+        if (restStatus != OrderValidationCode.NO_ERROR) {
+            orderToValidate.setOrderValidationCode(restStatus);
+            return orderToValidate;
+        }
+
+        orderToValidate.setOrderValidationCode(OrderValidationCode.NO_ERROR);
         return orderToValidate;
     }
 
