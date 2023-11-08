@@ -1,5 +1,4 @@
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.ilp.constant.OrderStatus;
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class OrderValidatorTest {
     private Order order;
     private OrderValidator orderValidator;
-    private Restaurant[] restaurants = {new Restaurant("Civerinos Slice", new LngLat(55.945535152517735,-3.1912869215011597),
+    private final Restaurant[] restaurants = {new Restaurant("Civerinos Slice", new LngLat(55.945535152517735,-3.1912869215011597),
             new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY},
             new Pizza[]{new Pizza("Margarita",1000), new Pizza("Calzone",1400)}),
 
@@ -37,7 +36,7 @@ public class OrderValidatorTest {
 
     @Test
     public void testUndefined() {
-        order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
+        order = new Order("19514FE0", LocalDate.of(2023, 9, 1), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)}, new CreditCardInformation("13499472696504",
                 "06/28", "952"));
 
@@ -47,7 +46,7 @@ public class OrderValidatorTest {
     @Test
     public void testNoError() {
 
-        order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
+        order = new Order("19514FE0", LocalDate.of(2023, 9, 1), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
                 new CreditCardInformation("1349947269650466","06/28", "952"));
 
@@ -59,7 +58,7 @@ public class OrderValidatorTest {
     @Test
     public void cardTooShortInvalid() {
 
-        order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
+        order = new Order("19514FE0", LocalDate.of(2023, 9, 1), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
                 new CreditCardInformation("1349947269650","06/28", "952"));
 
@@ -71,7 +70,7 @@ public class OrderValidatorTest {
     @Test
     public void cardTooLongInvalid() {
 
-        order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
+        order = new Order("19514FE0", LocalDate.of(2023, 9, 1), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
                 new CreditCardInformation("13499472696505543534534435","06/28", "952"));
 
@@ -83,7 +82,7 @@ public class OrderValidatorTest {
     @Test
     public void cardNotNumInvalid() {
 
-        order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
+        order = new Order("19514FE0", LocalDate.of(2023, 9, 1), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
                 new CreditCardInformation("1111mmmmmm222222","06/28", "952"));
 
@@ -101,7 +100,7 @@ public class OrderValidatorTest {
 
         orderValidator.validateOrder(order, restaurants);
 
-        assertEquals(OrderValidationCode.NO_ERROR, order.getOrderValidationCode());
+        assertEquals(OrderValidationCode.EXPIRY_DATE_INVALID, order.getOrderValidationCode());
     }
 
     @Test
@@ -113,7 +112,7 @@ public class OrderValidatorTest {
 
         orderValidator.validateOrder(order, restaurants);
 
-        assertEquals(OrderValidationCode.NO_ERROR, order.getOrderValidationCode());
+        assertEquals(OrderValidationCode.EXPIRY_DATE_INVALID, order.getOrderValidationCode());
     }
 
     @Test
@@ -121,7 +120,7 @@ public class OrderValidatorTest {
 
         order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
-                new CreditCardInformation("1349947269650466","06/21", "9524"));
+                new CreditCardInformation("1349947269650466","06/24", "9524"));
 
         orderValidator.validateOrder(order, restaurants);
 
@@ -133,7 +132,7 @@ public class OrderValidatorTest {
 
         order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
-                new CreditCardInformation("1349947269650466","06/21", "95"));
+                new CreditCardInformation("1349947269650466","06/24", "95"));
 
         orderValidator.validateOrder(order, restaurants);
 
@@ -145,7 +144,7 @@ public class OrderValidatorTest {
 
         order = new Order("19514FE0", LocalDate.of(2023, 9, 01), OrderStatus.UNDEFINED,
                 OrderValidationCode.UNDEFINED, 2400, new Pizza[]{new Pizza("Super Cheese", 1400), new Pizza("All Shrooms", 900)},
-                new CreditCardInformation("1349947269650466","06/21", "95e"));
+                new CreditCardInformation("1349947269650466","06/24", "95e"));
 
         orderValidator.validateOrder(order, restaurants);
 
