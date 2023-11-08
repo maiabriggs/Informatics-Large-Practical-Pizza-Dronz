@@ -7,8 +7,8 @@ import java.time.LocalDate;
 
 public class CardValidator {
 
-    /** Checks all credit card validation
-     * @return order validation status
+    /** Checks all credit card validation.
+     * @return order validation status.
      */
     public OrderValidationCode cardValidator(CreditCardInformation creditInfo) {
         if (validateCreditNumber(creditInfo.getCreditCardNumber()) != OrderValidationCode.NO_ERROR) {
@@ -26,11 +26,10 @@ public class CardValidator {
     }
 
 
-    /** Validates the Credit Card Number
-     * @param creditNumber The credit card number
-     * @return order validation status
+    /** Validates the Credit Card Number.
+     * @param creditNumber The credit card number.
+     * @return order validation status.
      * */
-    //TODO: Make this less confusing
     public OrderValidationCode validateCreditNumber(String creditNumber) {
         //Checks the card number is the right length and has all digits
         if (creditNumber.length() == 16) {
@@ -45,9 +44,9 @@ public class CardValidator {
         }
     }
 
-    /** Validates the Credit card CVV Number
-     * @param cvv The credit card information
-     * order validation status
+    /** Validates the Credit card CVV Number.
+     * @param cvv The credit card information.
+     * order validation status.
      * */
     public OrderValidationCode validateCreditCVV(String cvv) {
         if (cvv.length() == 3) {
@@ -61,9 +60,9 @@ public class CardValidator {
         return OrderValidationCode.CVV_INVALID;
     }
 
-    /** Validates the Credit card expiry date
-     * @param date The credit card information
-     * order validation status
+    /** Validates the Credit card expiry date.
+     * @param date The credit card information.
+     * order validation status.
      * */
     public OrderValidationCode validateCreditDate(String date) {
         int currentMonth = LocalDate.now().getMonthValue();
