@@ -68,18 +68,17 @@ public class CardValidator {
         int currentMonth = LocalDate.now().getMonthValue();
         int currentYear = LocalDate.now().getYear();
 
-        System.out.println(currentMonth);
-        System.out.println(currentYear);
-
         //Split the expiry date by the backslash
         String[] expiry = date.split("/");
 
-        System.out.println(2000 + expiry[1]);
-        if (Integer.parseInt(2000 + expiry[1]) < currentYear) {
+        int orderYear = Integer.parseInt(20 + expiry[1]);
+        int orderMonth = Integer.parseInt(expiry[0]);
+
+        if ( orderYear < currentYear) {
             return OrderValidationCode.EXPIRY_DATE_INVALID;
         }
-        else if (Integer.parseInt(2000 + expiry[0]) == currentYear) {
-                if (Integer.parseInt(expiry[1]) < currentMonth) {
+        else if (orderYear == currentYear) {
+                if (orderMonth < currentMonth) {
                     return OrderValidationCode.EXPIRY_DATE_INVALID;
                 }
             }
