@@ -6,7 +6,7 @@
 
     <artifactId>PizzaDronz</artifactId>
     <groupId>uk.ac.ed.inf</groupId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
