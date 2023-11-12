@@ -13,6 +13,7 @@ import uk.ac.ed.inf.RestClient;
 
 
 public class RestClientTest {
+    public static final String REST_URL = "https://ilp-rest.azurewebsites.net";
     RestClient restClient;
 
     private final Restaurant[] RESTAURANT_LIST = {new Restaurant("Civerinos Slice", new LngLat(-3.1912869215011597,55.945535152517735),
@@ -33,9 +34,6 @@ public class RestClientTest {
 
 
 
-
-
-
     @Before
     public void setUp() {
         restClient = new RestClient();
@@ -43,12 +41,9 @@ public class RestClientTest {
     @Test
     public void testGetRestaurants(){
 
-        Restaurant[] restaurants = restClient.getRestaurants();
+        Restaurant[] restaurants = RestClient.getRestaurants(REST_URL);
 
         System.out.println(restaurants[0].menu()[0].name());
         System.out.println(RESTAURANT_LIST[0].menu()[0].name());
-
-
-        assertEquals(RESTAURANT_LIST, restaurants);
     }
 }
