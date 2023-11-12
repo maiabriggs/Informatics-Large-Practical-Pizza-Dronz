@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="GB"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-18-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/surefire/surefirebooter16179765383836694583.jar /afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/surefire 2023-11-12T13-08-09_078-jvmRun1 surefire11397309650338307303tmp surefire_08385867878952336791tmp"/>
+    <property name="sun.java.command" value="/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/surefire/surefirebooter8521014372463505999.jar /afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/surefire 2023-11-12T14-10-16_724-jvmRun1 surefire18054901593196256180tmp surefire_0563132309212883741tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/test-classes:/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/classes:/afs/inf.ed.ac.uk/user/s21/s2142737/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/afs/inf.ed.ac.uk/user/s21/s2142737/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/afs/inf.ed.ac.uk/user/s21/s2142737/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.1/jackson-databind-2.14.1.jar:/afs/inf.ed.ac.uk/user/s21/s2142737/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.1/jackson-annotations-2.14.1.jar:/afs/inf.ed.ac.uk/user/s21/s2142737/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.1/jackson-core-2.14.1.jar:/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/Libraries/IlpDataObjects.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/surefire/surefirebooter16179765383836694583.jar"/>
+    <property name="surefire.real.class.path" value="/afs/inf.ed.ac.uk/user/s21/s2142737/IdeaProjects/Informatics-Large-Practical/target/surefire/surefirebooter8521014372463505999.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="18.0.2-ea+9-Ubuntu-222.04"/>
     <property name="user.name" value="s2142737"/>
@@ -51,7 +51,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="62.0"/>
   </properties>
-  <testcase name="cvvNotNumInvalid" classname="OrderValidatorTest" time="0"/>
+  <testcase name="cvvNotNumInvalid" classname="OrderValidatorTest" time="0.001"/>
   <testcase name="cvvInvalid" classname="OrderValidatorTest" time="0"/>
   <testcase name="cardNotNumInvalid" classname="OrderValidatorTest" time="0"/>
   <testcase name="cardTooShortInvalid" classname="OrderValidatorTest" time="0"/>
@@ -65,5 +65,5 @@
   <testcase name="restaurantClosed" classname="OrderValidatorTest" time="0"/>
   <testcase name="cardTooLongInvalid" classname="OrderValidatorTest" time="0"/>
   <testcase name="tooManyPizza" classname="OrderValidatorTest" time="0"/>
-  <testcase name="expiryDateInvalid" classname="OrderValidatorTest" time="0.001"/>
+  <testcase name="expiryDateInvalid" classname="OrderValidatorTest" time="0"/>
 </testsuite>

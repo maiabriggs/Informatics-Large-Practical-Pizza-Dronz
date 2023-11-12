@@ -4,6 +4,7 @@ import uk.ac.ed.inf.RestClient;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,7 +18,7 @@ public class PizzaDronzApp {
         String restWebsite = args[1];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime date = LocalDateTime.parse(args[0], formatter);
+        LocalDate date = LocalDate.parse(args[0], formatter);
 
         //Get information from REST
         RestClient restClient = new RestClient();

@@ -1,3 +1,7 @@
-uk/ac/ed/inf/validation/PizzaValidator.class
+uk/ac/ed/inf/LngLatHandler.class
+uk/ac/ed/inf/validation/PizzaDronzApp.class
 uk/ac/ed/inf/validation/CardValidator.class
+uk/ac/ed/inf/RestClient.class
+uk/ac/ed/inf/validation/PizzaValidator.class
+uk/ac/ed/inf/OrderValidator.class
 uk/ac/ed/inf/validation/RestaurantValidator.class
