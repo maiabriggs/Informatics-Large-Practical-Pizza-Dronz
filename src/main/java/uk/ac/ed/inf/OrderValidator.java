@@ -9,6 +9,9 @@ import uk.ac.ed.inf.validation.CardValidator;
 import uk.ac.ed.inf.validation.PizzaValidator;
 import uk.ac.ed.inf.validation.RestaurantValidator;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class OrderValidator implements OrderValidation {
     @Override
     public Order validateOrder(Order orderToValidate, Restaurant[] definedRestaurants) {
@@ -36,6 +39,20 @@ public class OrderValidator implements OrderValidation {
         orderToValidate.setOrderValidationCode(OrderValidationCode.NO_ERROR);
         orderToValidate.setOrderStatus(OrderStatus.VALID_BUT_NOT_DELIVERED);
         return orderToValidate;
+    }
+
+    public static Order[] getValidatedOrders(Order[] ordersToValidate, Restaurant[] restaurants) {
+        OrderValidator orderValidator = new OrderValidator();
+
+        for (int i = 0; i < ordersToValidate.length; i++) {
+            orderValidator.validateOrder(ordersToValidate[i], restaurants);
+        }
+
+        Order[] orders = Arrays.stream(ordersToValidate)
+                .filter(order -> order.getOrderValidationCode() == OrderValidationCode.NO_ERROR)
+                .collect(Collectors.toList()).toArray(Order[]::new);
+
+        return orders;
     }
 
 }

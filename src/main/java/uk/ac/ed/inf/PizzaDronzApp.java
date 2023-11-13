@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.validation;
+package uk.ac.ed.inf;
 
 import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.RestClient;
@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+
+import static uk.ac.ed.inf.OrderValidator.getValidatedOrders;
 
 public class PizzaDronzApp {
     public static void main(String[] args){
@@ -31,20 +33,5 @@ public class PizzaDronzApp {
 
         //Validate Orders
         Order[] validatedOrders = getValidatedOrders(orders, restaurants);
-    }
-
-
-    public static Order[] getValidatedOrders(Order[] ordersToValidate, Restaurant[] restaurants) {
-        OrderValidator orderValidator = new OrderValidator();
-
-        for (int i = 0; i < ordersToValidate.length; i++) {
-            orderValidator.validateOrder(ordersToValidate[i], restaurants);
-        }
-
-        Order[] orders = Arrays.stream(ordersToValidate)
-                .filter(order -> order.getOrderValidationCode() == OrderValidationCode.NO_ERROR)
-                .collect(Collectors.toList()).toArray(Order[]::new);
-
-        return orders;
     }
 }
