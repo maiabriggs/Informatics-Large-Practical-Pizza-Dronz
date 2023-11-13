@@ -1,6 +1,7 @@
 package uk.ac.ed.inf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import uk.ac.ed.inf.ilp.data.LngLat;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,12 +15,12 @@ import java.util.Arrays;
 public class RestClient {
     public static final String RESTAURANT_URL = "/restaurants";
     public static final String ORDER_URL = "/orders";
+    public static ObjectMapper mapper = new ObjectMapper();
 
     /** Gets the list of restaurants from the web server
      * @return The List of restaurants
      */
     public static Restaurant[] getRestaurants(String url) {
-        ObjectMapper mapper = new ObjectMapper();
         Restaurant[] restaurants;
         try {
             restaurants = mapper.readValue(new URL(url + RESTAURANT_URL), Restaurant[].class);
@@ -38,7 +39,6 @@ public class RestClient {
      */
     public static Order[] getOrders(String date, String url) {
         Order[] orders;
-        ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
         try {
@@ -49,6 +49,17 @@ public class RestClient {
         }
 
         return orders;
+    }
+
+    public static LngLat[] getCentralArea(String url) {
+        LngLat[] centralArea;
+        try {
+            centralArea = mapper.readValue(new URL(url + "/centralArea"), LngLat[].class);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+         return centralArea;
     }
 
 
