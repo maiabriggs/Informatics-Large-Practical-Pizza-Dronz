@@ -15,22 +15,26 @@ public class OrderValidator implements OrderValidation {
         OrderValidationCode creditStatus = new CardValidator().cardValidator(orderToValidate.getCreditCardInformation());
         if (creditStatus != OrderValidationCode.NO_ERROR) {
             orderToValidate.setOrderValidationCode(creditStatus);
+            orderToValidate.setOrderStatus(OrderStatus.INVALID);
             return orderToValidate;
         }
 
         OrderValidationCode pizzaStatus = new PizzaValidator().pizzaValidator(orderToValidate.getPizzasInOrder(), orderToValidate.getPriceTotalInPence(), definedRestaurants);
         if (pizzaStatus != OrderValidationCode.NO_ERROR) {
             orderToValidate.setOrderValidationCode(pizzaStatus);
+            orderToValidate.setOrderStatus(OrderStatus.INVALID);
             return orderToValidate;
         }
 
         OrderValidationCode restStatus = new RestaurantValidator().restaurantValidator(definedRestaurants, orderToValidate.getPizzasInOrder(), orderToValidate.getOrderDate());
         if (restStatus != OrderValidationCode.NO_ERROR) {
             orderToValidate.setOrderValidationCode(restStatus);
+            orderToValidate.setOrderStatus(OrderStatus.INVALID);
             return orderToValidate;
         }
 
         orderToValidate.setOrderValidationCode(OrderValidationCode.NO_ERROR);
+        orderToValidate.setOrderStatus(OrderStatus.VALID_BUT_NOT_DELIVERED);
         return orderToValidate;
     }
 
