@@ -21,6 +21,8 @@ public class PizzaDronzApp {
             System.exit(1);
         }
 
+        //TODO: check that the args are valid (i.e. valid date and URL)
+
         String restWebsite = args[1];
         String date = args[0];
 
