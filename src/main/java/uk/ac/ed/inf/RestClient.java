@@ -36,19 +36,17 @@ public class RestClient {
      * @param date - The date time orders should be retrieved from.
      * @return The list of orders
      */
-    public static Order[] getOrders(LocalDate date, String url) {
-        Order[] allOrders;
+    public static Order[] getOrders(String date, String url) {
+        Order[] orders;
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
         try {
-            allOrders = mapper.readValue(new URL(url + ORDER_URL), Order[].class);
+            orders = mapper.readValue(new URL(url + ORDER_URL + "/" + date), Order[].class);
             System.out.println("read all orders");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        Order[] orders = Arrays.stream(allOrders).filter(order -> order.getOrderDate().equals(date)).toArray(Order[]::new);
 
         return orders;
     }

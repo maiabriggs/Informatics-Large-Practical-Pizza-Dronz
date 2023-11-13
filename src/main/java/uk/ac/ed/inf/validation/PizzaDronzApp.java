@@ -16,15 +16,16 @@ public class PizzaDronzApp {
         }
 
         String restWebsite = args[1];
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(args[0], formatter);
+        String date = args[0];
 
         //Get information from REST
         RestClient restClient = new RestClient();
 
+        //Update Restaurants and Orders from REST
         Restaurant[] restaurants = restClient.getRestaurants(restWebsite);
         Order[] orders = restClient.getOrders(date, restWebsite);
+
+        //Validate orders
 
 
     }

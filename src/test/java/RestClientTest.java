@@ -77,7 +77,7 @@ public class RestClientTest {
 
     @Test
     public void testGetOrders() {
-        Order[] orders = restClient.getOrders(LocalDate.of(2023, 11, 12), REST_URL);
+        Order[] orders = restClient.getOrders("2023-11-12", REST_URL);
 
         for (int i = 0; i < orders.length; i++) {
             assertEquals(LocalDate.of(2023, 11, 12), orders[i].getOrderDate());
