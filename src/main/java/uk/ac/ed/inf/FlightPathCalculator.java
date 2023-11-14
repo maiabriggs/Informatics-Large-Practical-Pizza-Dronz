@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 
+import uk.ac.ed.inf.constant.Direction;
 import uk.ac.ed.inf.data.Move;
 import uk.ac.ed.inf.ilp.data.LngLat;
 import uk.ac.ed.inf.ilp.data.Order;
@@ -22,8 +23,11 @@ public class FlightPathCalculator{
         return moves;
     }
 
+    Double[] directions = Direction.getAllDirections();
     private LngLat[] findNeighbours(LngLat currentPos) {
-        for (int i = 0; )
+        for (int i = 0; i < directions.length; i++) {
+
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package uk.ac.ed.inf.constant;
 
-public class Directions {
+public class Direction {
     public static final double NORTH = 90;
     public static final double SOUTH = 270;
     public static final double WEST = 180;
@@ -20,5 +20,9 @@ public class Directions {
     public static final double SSE = 292.5;
     public static final double SE = 315;
     public static final double ESE = 337.5;
+
+    public static Double[] getAllDirections() {
+        return new Double[] {EAST, ENE, NE, NNE, NORTH, NNW, NW, WNW, WEST, WSW, SW, SSW, SOUTH, SSE, SE, ESE};
+    }
 
 }
