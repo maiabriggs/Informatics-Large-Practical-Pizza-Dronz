@@ -2,6 +2,7 @@ package uk.ac.ed.inf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.ac.ed.inf.ilp.data.LngLat;
+import uk.ac.ed.inf.ilp.data.NamedRegion;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -51,16 +52,28 @@ public class RestClient {
         return orders;
     }
 
-    public static LngLat[] getCentralArea(String url) {
-        LngLat[] centralArea;
+    public static NamedRegion getCentralArea(String url) {
+        NamedRegion centralArea;
         try {
-            centralArea = mapper.readValue(new URL(url + "/centralArea"), LngLat[].class);
+            centralArea = mapper.readValue(new URL(url + "/centralArea"), NamedRegion.class);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-         return centralArea;
+        return centralArea;
     }
+
+    public static NamedRegion[] noFlyZones(String url) {
+        NamedRegion[] noFlyZones;
+        try {
+            noFlyZones = mapper.readValue(new URL(url + "/centralArea"), NamedRegion[].class);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return noFlyZones;
+    }
+
 
 
 }

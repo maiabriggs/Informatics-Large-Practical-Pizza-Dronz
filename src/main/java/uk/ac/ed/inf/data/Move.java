@@ -2,18 +2,25 @@ package uk.ac.ed.inf.data;
 
 public class Move {
     private String orderNo = "";
-    private double fromLong;
-    private double fromLat;
+    private double currLong;
+    private double currLat;
     private double angle;
-    private double toLong;
-    private double toLat;
+    private double nextLong;
+    private double nextLat;
+
+    int total, g, h; //Total, cost estimate and heuristic cost estimate.
+
+    Move parent; //The position we came from
 
 
-    public Move(String orderNo, double startLong, double startLat, double angle) {
+    public Move(String orderNo, double startLong, double startLat) {
         this.setOrderNo(orderNo);
-        this.setFromLong(startLong);
-        this.setFromLat(startLat);
-        this.setAngle(angle);
+        this.setCurrLong(startLong);
+        this.setCurrLat(startLat);
+        this.setParent(null);
+        this.total = 0;
+        this.g = 0;
+        this.h = 0;
     }
 
     public Move() {
@@ -28,20 +35,20 @@ public class Move {
         this.orderNo = orderNo;
     }
 
-    public double getFromLong() {
-        return this.fromLong;
+    public double getCurrLong() {
+        return this.currLong;
     }
 
-    public void setFromLong(double fromLong) {
-        this.fromLong = fromLong;
+    public void setCurrLong(double currLong) {
+        this.currLong = currLong;
     }
 
-    public double getFromLat() {
-        return this.fromLat;
+    public double getCurrLat() {
+        return this.currLat;
     }
 
-    public void setFromLat(double fromLat) {
-        this.fromLat = fromLat;
+    public void setCurrLat(double currLat) {
+        this.currLat = currLat;
     }
 
     public double getAngle()
@@ -53,20 +60,28 @@ public class Move {
         this.angle = angle;
     }
 
-    public double getToLong() {
-        return this.toLong;
+    public double getNextLong() {
+        return this.nextLong;
     }
 
-    public void setToLong(double toLong) {
-        this.toLong = toLong;
+    public void setNextLong(double nextLong) {
+        this.nextLong = nextLong;
     }
 
-    public double getToLat() {
-        return this.toLat;
+    public double getNextLat() {
+        return this.nextLat;
     }
 
-    public void setToLat(double toLat) {
-        this.toLat = toLat;
+    public void setNextLat(double nextLat) {
+        this.nextLat = nextLat;
+    }
+
+    public Move parent() {
+        return this.parent;
+    }
+
+    public void setParent(Move parent) {
+        this.parent = parent;
     }
 
 

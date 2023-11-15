@@ -1,7 +1,12 @@
+uk/ac/ed/inf/FlightPathCalculator.class
 uk/ac/ed/inf/LngLatHandler.class
-uk/ac/ed/inf/validation/PizzaDronzApp.class
 uk/ac/ed/inf/validation/CardValidator.class
+uk/ac/ed/inf/data/Move.class
+uk/ac/ed/inf/serialisers/OrderSerialiser.class
+uk/ac/ed/inf/PizzaDronzApp.class
+uk/ac/ed/inf/constant/Direction.class
 uk/ac/ed/inf/RestClient.class
+uk/ac/ed/inf/ResultFileHandler.class
 uk/ac/ed/inf/validation/PizzaValidator.class
 uk/ac/ed/inf/OrderValidator.class
 uk/ac/ed/inf/validation/RestaurantValidator.class
