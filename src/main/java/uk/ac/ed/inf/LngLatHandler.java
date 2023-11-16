@@ -61,6 +61,15 @@ public class LngLatHandler implements LngLatHandling {
         return (intersections % 2) == 1;
     }
 
+    public boolean isInMultipleRegions(LngLat position, NamedRegion[] regions) {
+        for (NamedRegion region : regions) {
+            if (isInRegion(position, region)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**Calculates the next position of the drone.
      * @param startPosition Where the drone is currently.
      * @param angle The angle the drone is flying in.

@@ -26,6 +26,7 @@ public class FlightPathCalculator{
         while (!openSet.isEmpty()) {
             //Pops the head of the queue (the one with the smallest cost)
             Move current = openSet.poll();
+            LngLat currLngLat = new LngLat(current.getCurrLong(), current.getCurrLat());
 
 
             closedSet.add(current);
@@ -43,11 +44,41 @@ public class FlightPathCalculator{
             LngLatHandler lngLatHandler = new LngLatHandler();
             for (double angle : Direction.getAllDirections()) {
 
-                LngLat neighbour = lngLatHandler.nextPosition(new LngLat(current.getCurrLong(), current.getCurrLat()), angle);
+                LngLat neighLngLat = lngLatHandler.nextPosition(currLngLat, angle);
+                Move position = new Move(order.getOrderNo(), neighLngLat.lng(), neighLngLat.lat());
+
+                if (lngLatHandler.isInMultipleRegions(currLngLat, noFlyZones) && !closedSet.contains(position)) {
+
+                    double g = current.getG() + 1;
+
+                    Move existing_neighbour = checkIfInFrontier(position);
+
+                    if(existing_neighbour != null) {
+                        if (g < existing_neighbour.getG()) {
+                            existing_neighbour.setParent(current);
+                            existing_neighbour.setG(g);
+                            existing_neighbour.setH(heuristic(new LngLat(existing_neighbour.getCurrLong(), existing_neighbour.getCurrLat()), finish));
+                            current.setNextLat(existing_neighbour.getCurrLat());
+                            current.setNextLong(existing_neighbour.getNextLong());
+                            position.setTotal(position.getG() + position.getH());
+                        }
+                    }
+
+                    else {
+                        Move neighbour = new Move(position.getOrderNo(), position.getCurrLong(), position.getCurrLat());
+                        neighbour.setParent(current);
+                        neighbour.setG(g);
+                        neighbour.setH(heuristic(new LngLat(neighbour.getCurrLong(), neighbour.getCurrLat()), finish));
+                        neighbour.setTotal(neighbour.getG() + neighbour.getH());
+                        current.setNextLat(neighbour.getCurrLat());
+                        current.setNextLong(neighbour.getNextLong());
+
+                    }
+                }
 
             }
 
-
+            throw new RuntimeException("Path not found");
         }
 
 
@@ -56,6 +87,28 @@ public class FlightPathCalculator{
 
 
         return path;
+    }
+
+
+    public static Move checkIfInFrontier(Move neighbour) {
+        if(openSet.isEmpty()) {
+            return null;
+        }
+        Iterator<Move> iterator = openSet.iterator();
+
+        Move find = null;
+        while (iterator.hasNext()) {
+            Move next = iterator.next();
+            if (next.getCurrLong() == neighbour.getCurrLong() && next.getCurrLat() == neighbour.getCurrLat()) {
+                find = next;
+                break;
+            }
+        }
+        return find;
+    }
+
+    public static double heuristic (LngLat a, LngLat b) {
+        return Math.abs(a.lng() - b.lng()) + Math.abs(a.lat() - b.lat());
     }
 
 }

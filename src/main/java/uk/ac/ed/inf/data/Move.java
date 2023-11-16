@@ -8,7 +8,7 @@ public class Move {
     private double nextLong;
     private double nextLat;
 
-    int total, g, h; //Total, cost estimate and heuristic cost estimate.
+    double total, g, h; //Total, cost estimate and heuristic cost estimate.
 
     Move parent; //The position we came from
 
@@ -84,5 +84,27 @@ public class Move {
         this.parent = parent;
     }
 
+    public double getG() {
+        return this.g;
+    }
 
+    public void setG(double g) {
+        this.g = g;
+    }
+
+    public double getH() {
+        return h;
+    }
+
+    public void setH(double h) {
+        this.h = h;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
 }
