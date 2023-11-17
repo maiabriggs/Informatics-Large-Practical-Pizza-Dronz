@@ -2,6 +2,7 @@ package uk.ac.ed.inf;
 
 import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.RestClient;
+import uk.ac.ed.inf.data.Move;
 import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
 import uk.ac.ed.inf.ilp.data.NamedRegion;
 import uk.ac.ed.inf.ilp.data.Order;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static uk.ac.ed.inf.OrderValidator.getValidatedOrders;
@@ -41,6 +43,9 @@ public class PizzaDronzApp {
 
         //Calculate the flight path
         FlightPathCalculator flightPathCalculator = new FlightPathCalculator();
+        List<Move> path = flightPathCalculator.calculateAllFlightPaths(orders, centralArea, noFlyZones, restaurants);
+        ResultFileHandler resultFileHandler = new ResultFileHandler();
+        resultFileHandler.createAllResults(orders, path, date);
 
     }
 }

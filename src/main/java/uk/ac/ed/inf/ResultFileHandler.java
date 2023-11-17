@@ -12,6 +12,7 @@ import uk.ac.ed.inf.serialisers.OrderSerialiser;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class ResultFileHandler {
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -70,13 +71,13 @@ public class ResultFileHandler {
     /**
      * Create all files
      */
-    public static void createAllResults(Order[] orders, Move[] moves,  String date){
+    public static void createAllResults(Order[] orders, List<Move> moves, String date){
         createResultDirectory();
         createDeliveriesFile(orders, date);
         createFlightPathFile(moves, date);
     }
 
-    public static void createFlightPathFile(Move[] moves, String date){
+    public static void createFlightPathFile(List<Move> moves, String date){
         SimpleModule module =
                 new SimpleModule("MoveSerialiser");
         module.addSerializer(Move.class, new MoveSerialiser());
@@ -86,7 +87,7 @@ public class ResultFileHandler {
         String json = null;
 
         try {
-            json = mapper.writeValueAsString(Arrays.stream(moves).toList());
+            json = mapper.writeValueAsString(moves);
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
