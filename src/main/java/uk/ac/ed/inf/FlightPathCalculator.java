@@ -2,9 +2,7 @@ package uk.ac.ed.inf;
 
 import uk.ac.ed.inf.constant.Direction;
 import uk.ac.ed.inf.data.Move;
-import uk.ac.ed.inf.ilp.data.LngLat;
-import uk.ac.ed.inf.ilp.data.NamedRegion;
-import uk.ac.ed.inf.ilp.data.Order;
+import uk.ac.ed.inf.ilp.data.*;
 
 import java.util.*;
 
@@ -14,10 +12,10 @@ public class FlightPathCalculator{
     private static HashSet<Move> closedSet;
     private static List<Move> path;
 
-    private final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
+    private static final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
 
 
-    public List<Move> calculateFlightPath(Order order, LngLat start, LngLat finish, NamedRegion centralArea, NamedRegion[] noFlyZones) {
+    public static boolean calculateFlightPath(Order order, LngLat start, LngLat finish, NamedRegion centralArea, NamedRegion[] noFlyZones) {
 
         //Add the first move
         openSet.add(new Move(order.getOrderNo(), start.lng(), start.lat()));
@@ -38,7 +36,7 @@ public class FlightPathCalculator{
                     current = current.parent();
                 }
                 Collections.reverse(path);
-                return path;
+                return true;
             }
 
             LngLatHandler lngLatHandler = new LngLatHandler();
@@ -77,16 +75,10 @@ public class FlightPathCalculator{
                 }
 
             }
-
-            throw new RuntimeException("Path not found");
+            return false;
         }
 
-
-
-
-
-
-        return path;
+        return true;
     }
 
 
@@ -109,6 +101,37 @@ public class FlightPathCalculator{
 
     public static double heuristic (LngLat a, LngLat b) {
         return Math.abs(a.lng() - b.lng()) + Math.abs(a.lat() - b.lat());
+    }
+
+    public static List<Move> calculateAllFlightPaths(Order[] orders, NamedRegion centralArea, NamedRegion[] noFlyZones, Restaurant[] restaurants){
+        for (Order order : orders) {
+            List<Restaurant> restaurantsToGo = getRestaurantsInOrder(order, restaurants);
+            List<LngLat> coOrds = null;
+            for (Restaurant restaurant : restaurantsToGo) {
+                coOrds.add(restaurant.location());
+            }
+            calculateFlightPath(order, APPLETON_TOWER, restaurantsToGo.get(0).location(), centralArea, noFlyZones);
+            for (int i = 1; i < restaurantsToGo.size(); i++) {
+                calculateFlightPath(order, APPLETON_TOWER, restaurantsToGo.get(i).location(), centralArea, noFlyZones);
+            }
+            calculateFlightPath(order, restaurantsToGo.get(-1).location(), APPLETON_TOWER, centralArea, noFlyZones);
+        }
+        return path;
+    }
+
+    public static List<Restaurant> getRestaurantsInOrder(Order order, Restaurant[] restaurants) {
+        List<Restaurant> restaurantsInOrder = null;
+        Pizza[] pizzas = order.getPizzasInOrder();
+        for (Pizza pizza : pizzas) {
+            for (Restaurant restaurant : restaurants) {
+                for (Pizza item : restaurant.menu()) {
+                    if ((item.name() == pizza.name())) {
+                        restaurantsInOrder.add(restaurant);
+                    }
+                }
+            }
+        }
+        return restaurantsInOrder;
     }
 
 }

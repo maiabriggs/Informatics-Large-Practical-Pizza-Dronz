@@ -3,6 +3,7 @@ package uk.ac.ed.inf;
 import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.RestClient;
 import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
+import uk.ac.ed.inf.ilp.data.NamedRegion;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 
@@ -32,8 +33,14 @@ public class PizzaDronzApp {
         //Update Restaurants and Orders from REST
         Restaurant[] restaurants = restClient.getRestaurants(restWebsite);
         Order[] orders = restClient.getOrders(date, restWebsite);
+        NamedRegion centralArea = restClient.getCentralArea(restWebsite);
+        NamedRegion[] noFlyZones = restClient.noFlyZones(restWebsite);
 
         //Validate Orders
         Order[] validatedOrders = getValidatedOrders(orders, restaurants);
+
+        //Calculate the flight path
+        FlightPathCalculator flightPathCalculator = new FlightPathCalculator();
+
     }
 }

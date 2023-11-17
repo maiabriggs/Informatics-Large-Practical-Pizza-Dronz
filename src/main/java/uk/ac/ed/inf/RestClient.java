@@ -66,14 +66,12 @@ public class RestClient {
     public static NamedRegion[] noFlyZones(String url) {
         NamedRegion[] noFlyZones;
         try {
-            noFlyZones = mapper.readValue(new URL(url + "/centralArea"), NamedRegion[].class);
+            noFlyZones = mapper.readValue(new URL(url + "/noFlyZones"), NamedRegion[].class);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
         return noFlyZones;
     }
-
-
 
 }

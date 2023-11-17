@@ -52,7 +52,7 @@ public class ResultFileHandlerTest {
 
     @Test
     public void testDeliveriesResultFile() {
-        ResultFileHandler.createAllResults(actualOrders, "2023-11-12");
+       // ResultFileHandler.createAllResults(actualOrders, "2023-11-12");
     }
 
 

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import uk.ac.ed.inf.data.Move;
 import uk.ac.ed.inf.ilp.data.Order;
+import uk.ac.ed.inf.serialisers.MoveSerialiser;
 import uk.ac.ed.inf.serialisers.OrderSerialiser;
 
 import java.io.File;
@@ -68,11 +70,31 @@ public class ResultFileHandler {
     /**
      * Create all files
      */
-    public static void createAllResults(Order[] orders, String date){
+    public static void createAllResults(Order[] orders, Move[] moves,  String date){
         createResultDirectory();
         createDeliveriesFile(orders, date);
+        createFlightPathFile(moves, date);
     }
 
+    public static void createFlightPathFile(Move[] moves, String date){
+        SimpleModule module =
+                new SimpleModule("MoveSerialiser");
+        module.addSerializer(Move.class, new MoveSerialiser());
+        mapper.registerModule(module);
+        mapper.registerModule(new JavaTimeModule());
+
+        String json = null;
+
+        try {
+            json = mapper.writeValueAsString(Arrays.stream(moves).toList());
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        createFile(json, "resultfiles/flightpath-" + date + ".json");
+        System.out.println("flightpath file created");
+    }
 
 
 }
