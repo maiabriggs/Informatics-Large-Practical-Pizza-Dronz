@@ -1,4 +1,5 @@
-LngLatHandlerTest.class
 ResultFileHandlerTest.class
+LngLatHandlerTest.class
 OrderValidatorTest.class
 RestClientTest.class
+FlightPathCalculatorTest.class

@@ -1,6 +1,6 @@
 package uk.ac.ed.inf.data;
 
-public class Move {
+public class Move{
     private String orderNo = "";
     private double currLong;
     private double currLat;
@@ -21,10 +21,6 @@ public class Move {
         this.total = 0;
         this.g = 0;
         this.h = 0;
-    }
-
-    public Move() {
-
     }
 
     public String getOrderNo() {
@@ -107,4 +103,5 @@ public class Move {
     public void setTotal(double total) {
         this.total = total;
     }
+
 }

@@ -3,7 +3,9 @@ package uk.ac.ed.inf;
 import uk.ac.ed.inf.constant.Direction;
 import uk.ac.ed.inf.data.Move;
 import uk.ac.ed.inf.ilp.data.*;
+import uk.ac.ed.inf.validation.RestaurantValidator;
 
+import java.sql.Array;
 import java.util.*;
 
 public class FlightPathCalculator{
@@ -14,24 +16,35 @@ public class FlightPathCalculator{
 
     private static final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
 
-
+    //TODO Drone needs to hover
     public static boolean calculateFlightPath(Order order, LngLat start, LngLat finish, NamedRegion centralArea, NamedRegion[] noFlyZones) {
-
+        LngLatHandler lngLatHandler = new LngLatHandler();
+        openSet = new PriorityQueue<>(Comparator.comparingDouble(c -> c.getTotal()));
+        closedSet = new HashSet<>();
         //Add the first move
         openSet.add(new Move(order.getOrderNo(), start.lng(), start.lat()));
+        System.out.println("First move has been added");
 
         //While there a still cells to visit
+        if (!openSet.isEmpty()){
+            System.out.println("The open set is not empty");
+        }
+
         while (!openSet.isEmpty()) {
             //Pops the head of the queue (the one with the smallest cost)
             Move current = openSet.poll();
             LngLat currLngLat = new LngLat(current.getCurrLong(), current.getCurrLat());
-
-
+            System.out.println("Current Lng = " + currLngLat.lng());
+            System.out.println("Current Lat = " + currLngLat.lat());
+            System.out.println("Finish Lng = " + finish.lng());
+            System.out.println("Finish Lat = " + finish.lat());
             closedSet.add(current);
 
-            if (current.getCurrLong() == finish.lng() && current.getCurrLat() == finish.lat()) {
+            if (lngLatHandler.isCloseTo(currLngLat, finish)) {
+                System.out.println("We are at the finish");
                 path = new ArrayList<>();
                 while(current != null) {
+                    System.out.println("Adding to path");
                     path.add(current);
                     current = current.parent();
                 }
@@ -39,19 +52,20 @@ public class FlightPathCalculator{
                 return true;
             }
 
-            LngLatHandler lngLatHandler = new LngLatHandler();
             for (double angle : Direction.getAllDirections()) {
+                System.out.println(angle);
 
                 LngLat neighLngLat = lngLatHandler.nextPosition(currLngLat, angle);
                 Move position = new Move(order.getOrderNo(), neighLngLat.lng(), neighLngLat.lat());
 
-                if (lngLatHandler.isInMultipleRegions(currLngLat, noFlyZones) && !closedSet.contains(position)) {
+                if (!lngLatHandler.isInMultipleRegions(neighLngLat, noFlyZones) && !closedSet.contains(position)) {
 
                     double g = current.getG() + 1;
 
                     Move existing_neighbour = checkIfInFrontier(position);
 
                     if(existing_neighbour != null) {
+                        System.out.println("Theres a neighbour we've already visited");
                         if (g < existing_neighbour.getG()) {
                             existing_neighbour.setParent(current);
                             existing_neighbour.setG(g);
@@ -63,27 +77,30 @@ public class FlightPathCalculator{
                     }
 
                     else {
+                        System.out.println("There's no existing neighbour");
                         Move neighbour = new Move(position.getOrderNo(), position.getCurrLong(), position.getCurrLat());
                         neighbour.setParent(current);
                         neighbour.setG(g);
                         neighbour.setH(heuristic(new LngLat(neighbour.getCurrLong(), neighbour.getCurrLat()), finish));
                         neighbour.setTotal(neighbour.getG() + neighbour.getH());
                         current.setNextLat(neighbour.getCurrLat());
-                        current.setNextLong(neighbour.getNextLong());
+                        current.setNextLong(neighbour.getCurrLong());
+                        openSet.add(neighbour);
 
                     }
                 }
 
             }
-            return false;
         }
 
-        return true;
+        //No path found
+        return false;
     }
 
 
     public static Move checkIfInFrontier(Move neighbour) {
-        if(openSet.isEmpty()) {
+        LngLatHandler lngLatHandler = new LngLatHandler();
+        if (openSet.isEmpty()) {
             return null;
         }
         Iterator<Move> iterator = openSet.iterator();
@@ -91,7 +108,7 @@ public class FlightPathCalculator{
         Move find = null;
         while (iterator.hasNext()) {
             Move next = iterator.next();
-            if (next.getCurrLong() == neighbour.getCurrLong() && next.getCurrLat() == neighbour.getCurrLat()) {
+            if (lngLatHandler.isCloseTo(new LngLat(neighbour.getCurrLong(), neighbour.getCurrLat()), new LngLat(next.getCurrLong(), next.getCurrLat()))) {
                 find = next;
                 break;
             }
@@ -100,21 +117,17 @@ public class FlightPathCalculator{
     }
 
     public static double heuristic (LngLat a, LngLat b) {
-        return Math.abs(a.lng() - b.lng()) + Math.abs(a.lat() - b.lat());
+        LngLatHandler lngLatHandler = new LngLatHandler();
+        return lngLatHandler.distanceTo(a, b);
     }
 
     public static List<Move> calculateAllFlightPaths(Order[] orders, NamedRegion centralArea, NamedRegion[] noFlyZones, Restaurant[] restaurants){
+        RestaurantValidator restaurantValidator = new RestaurantValidator();
         for (Order order : orders) {
-            List<Restaurant> restaurantsToGo = getRestaurantsInOrder(order, restaurants);
-            List<LngLat> coOrds = null;
-            for (Restaurant restaurant : restaurantsToGo) {
-                coOrds.add(restaurant.location());
-            }
-            calculateFlightPath(order, APPLETON_TOWER, restaurantsToGo.get(0).location(), centralArea, noFlyZones);
-            for (int i = 1; i < restaurantsToGo.size(); i++) {
-                calculateFlightPath(order, APPLETON_TOWER, restaurantsToGo.get(i).location(), centralArea, noFlyZones);
-            }
-            calculateFlightPath(order, restaurantsToGo.get(-1).location(), APPLETON_TOWER, centralArea, noFlyZones);
+            Restaurant restaurant = restaurantValidator.findRestaurant(order.getPizzasInOrder()[0], restaurants);
+
+            calculateFlightPath(order, APPLETON_TOWER, restaurant.location(), centralArea, noFlyZones);
+            calculateFlightPath(order, restaurant.location(), APPLETON_TOWER, centralArea, noFlyZones);
         }
         return path;
     }
