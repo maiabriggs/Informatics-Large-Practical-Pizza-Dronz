@@ -3,6 +3,8 @@ package uk.ac.ed.inf;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.ac.ed.inf.data.Move;
 import uk.ac.ed.inf.ilp.data.Order;
@@ -95,6 +97,52 @@ public class ResultFileHandler {
 
         createFile(json, "resultfiles/flightpath-" + date + ".json");
         System.out.println("flightpath file created");
+    }
+
+    public static void createGeoJSONFile(List<Move> path, String date) {
+        ObjectNode properties = mapper.createObjectNode();
+        properties.put("name", "Flight Path");
+        properties.put("fill", "none");
+
+        ObjectNode geoJSON = mapper.createObjectNode();
+        geoJSON.put("type", "FeatureCollection");
+
+        ArrayNode features = geoJSON.putArray("features");
+
+        ObjectNode feature = mapper.createObjectNode();
+        feature.put("type", "Feature");
+
+        ObjectNode geometry = mapper.createObjectNode();
+        geometry.put("type", "LineString");
+
+        ArrayNode coords = mapper.createArrayNode();
+
+        for (Move move : path) {
+            coords.add(move.getCurrLong());
+            coords.add(move.getCurrLat());
+        }
+
+        ArrayNode pairs = mapper.createArrayNode();
+        for (int i = 0; i < coords.size(); i += 2) {
+            ArrayNode pair = mapper.createArrayNode();
+            pair.add(coords.get(i));
+            pair.add(coords.get(i +1));
+            pairs.add(pair);
+        }
+
+        geometry.set("coordinates", pairs);
+        feature.set("geometry", geometry);
+        feature.set("properties", properties);
+        features.add(feature);
+
+        try {
+            mapper.writeValue(new File ("resultfiles/flightpath-" + date + ".geojson"), geoJSON);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

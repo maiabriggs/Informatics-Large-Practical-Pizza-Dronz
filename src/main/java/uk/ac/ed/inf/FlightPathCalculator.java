@@ -24,7 +24,7 @@ public class FlightPathCalculator{
         //Add the first move
         openSet.add(new Move(order.getOrderNo(), start.lng(), start.lat()));
         System.out.println("First move has been added");
-
+        int count = 0;
         //While there a still cells to visit
         if (!openSet.isEmpty()){
             System.out.println("The open set is not empty");
@@ -40,7 +40,8 @@ public class FlightPathCalculator{
             System.out.println("Finish Lat = " + finish.lat());
             closedSet.add(current);
 
-            if (lngLatHandler.isCloseTo(currLngLat, finish)) {
+
+            if ((lngLatHandler.isCloseTo(currLngLat, finish) || count == 10000)) {
                 System.out.println("We are at the finish");
                 path = new ArrayList<>();
                 while(current != null) {
@@ -91,6 +92,7 @@ public class FlightPathCalculator{
                 }
 
             }
+            count += 1;
         }
 
         //No path found
@@ -125,7 +127,6 @@ public class FlightPathCalculator{
         RestaurantValidator restaurantValidator = new RestaurantValidator();
         for (Order order : orders) {
             Restaurant restaurant = restaurantValidator.findRestaurant(order.getPizzasInOrder()[0], restaurants);
-
             calculateFlightPath(order, APPLETON_TOWER, restaurant.location(), centralArea, noFlyZones);
             calculateFlightPath(order, restaurant.location(), APPLETON_TOWER, centralArea, noFlyZones);
         }
