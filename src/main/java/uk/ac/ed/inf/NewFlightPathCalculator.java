@@ -52,7 +52,7 @@ public class NewFlightPathCalculator {
                 }
 
                 //Check that there is not a better path option
-                if (!isOnClosedSet(neighbourMove) && !inNoFly(noFly, neighbour) && !lngLatHandler.isInRegion(neighbour, centralArea) || count == 999999999) {
+                if ((!isOnClosedSet(neighbourMove) && !inNoFly(noFly, neighbour) && !lngLatHandler.isInRegion(neighbour, centralArea)) || count == 5) {
                     System.out.println("Not on closed set or FORBIDDEN");
                     if (isLowerOnOpenSet(neighbourMove)) {
                         System.out.println("There's a better move");
