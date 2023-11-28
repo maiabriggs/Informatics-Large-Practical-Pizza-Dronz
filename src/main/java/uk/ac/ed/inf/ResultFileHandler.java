@@ -118,8 +118,8 @@ public class ResultFileHandler {
         ArrayNode coords = mapper.createArrayNode();
 
         for (Move move : path) {
-            coords.add(move.getCurrLong());
-            coords.add(move.getCurrLat());
+            coords.add(move.getCurrLngLat().lng());
+            coords.add(move.getCurrLngLat().lat());
         }
 
         ArrayNode pairs = mapper.createArrayNode();

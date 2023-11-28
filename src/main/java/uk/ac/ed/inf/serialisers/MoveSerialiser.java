@@ -28,27 +28,17 @@ public class MoveSerialiser extends StdSerializer<Move> {
 
         //fromLongitude
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField("fromLongitude", String.valueOf(move.getCurrLong()));
+        jsonGenerator.writeStringField("fromLongitude", String.valueOf(move.getCurrLngLat().lng()));
         jsonGenerator.writeEndObject();
 
         //fromLatitude
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField("fromLatitude", String.valueOf(move.getCurrLat()));
+        jsonGenerator.writeStringField("fromLatitude", String.valueOf(move.getCurrLngLat().lat()));
         jsonGenerator.writeEndObject();
 
         //angle
         jsonGenerator.writeStartObject();
         jsonGenerator.writeStringField("angle", String.valueOf(move.getAngle()));
-        jsonGenerator.writeEndObject();
-
-        //toLongitude
-        jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField("toLongitude", String.valueOf(move.getNextLong()));
-        jsonGenerator.writeEndObject();
-
-        //toLatitude
-        jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField("toLatitude", String.valueOf(move.getNextLat()));
         jsonGenerator.writeEndObject();
 
 

@@ -3,7 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
-import uk.ac.ed.inf.FlightPathCalculator;
+import uk.ac.ed.inf.NewFlightPathCalculator;
 import uk.ac.ed.inf.RestClient;
 import uk.ac.ed.inf.ilp.data.LngLat;
 import uk.ac.ed.inf.ilp.data.NamedRegion;
@@ -27,8 +27,8 @@ public class FlightPathCalculatorTest {
 
     private NamedRegion centralArea;
     private NamedRegion[] noFlyZones;
-    private FlightPathCalculator flightPathCalculator;
     private static final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
+
     @Before
     public void setUp() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -46,11 +46,6 @@ public class FlightPathCalculatorTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        flightPathCalculator = new FlightPathCalculator();
 
-    }
-    @Test
-    public void testFlightPathCalculator() {
-        assertTrue(FlightPathCalculator.calculateFlightPath(order, APPLETON_TOWER, restaurants[0].location(), centralArea, noFlyZones));
     }
 }

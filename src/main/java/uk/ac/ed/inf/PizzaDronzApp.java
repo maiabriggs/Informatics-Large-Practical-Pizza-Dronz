@@ -41,11 +41,5 @@ public class PizzaDronzApp {
         //Validate Orders
         Order[] validatedOrders = getValidatedOrders(orders, restaurants);
 
-        //Calculate the flight path
-        FlightPathCalculator flightPathCalculator = new FlightPathCalculator();
-        List<Move> path = flightPathCalculator.calculateAllFlightPaths(orders, centralArea, noFlyZones, restaurants);
-        ResultFileHandler resultFileHandler = new ResultFileHandler();
-        resultFileHandler.createAllResults(orders, path, date);
-
     }
 }

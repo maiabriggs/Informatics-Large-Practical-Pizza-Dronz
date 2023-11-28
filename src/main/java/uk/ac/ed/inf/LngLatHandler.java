@@ -81,44 +81,56 @@ public class LngLatHandler implements LngLatHandling {
         double nextLat;
 
         //If the angle is one of the four main directions (North, South, East, West)
+        //North
         if (angle == 90) {
-            nextLng = startPosition.lng() + 0.00015;
-            nextLat = startPosition.lat();
-        }
-        else if (angle == 180) {
             nextLng = startPosition.lng();
-            nextLat = startPosition.lat() - 0.00015;
+            nextLat = startPosition.lat() + 0.00015;
         }
-        else if (angle == 270) {
+        //West
+        else if (angle == 180) {
             nextLng = startPosition.lng() - 0.00015;
             nextLat = startPosition.lat();
         }
-        else if (angle == 0) {
+        //South
+        else if (angle == 270) {
             nextLng = startPosition.lng();
-            nextLat = startPosition.lat() + 0.00015;
+            nextLat = startPosition.lat() - 0.00015;
+        }
+        //East
+        else if (angle == 0) {
+            nextLng = startPosition.lng() + 0.00015;
+            nextLat = startPosition.lat();
         }
 
         //If it is not one of these directions
         else {
-            double distanceToLat = Math.acos(0.00015);
-            double distanceToLng = Math.asin(0.00015);
+            double distanceToLat = Math.asin(0.00015);
+            double distanceToLng = Math.acos(0.00015);
 
+            //Between East and North
             if (angle < 90 && angle > 0) {
                 nextLng = distanceToLng + startPosition.lng();
                 nextLat = distanceToLat + startPosition.lat();
             }
+
+            //Between North and West
             else if (angle > 90 && angle < 180) {
                 nextLng = distanceToLng - startPosition.lng();
                 nextLat = distanceToLat + startPosition.lat();
             }
+
+            //Between West and South
             else if (angle > 180 && angle < 270) {
                 nextLng = distanceToLng - startPosition.lng();
                 nextLat = distanceToLat - startPosition.lat();
             }
+
+            //Between South and East
             else {
                 nextLng = distanceToLng + startPosition.lng();
                 nextLat = distanceToLat - startPosition.lat();
             }
+
         }
         LngLat position = new LngLat(nextLng, nextLat);
         return position;
