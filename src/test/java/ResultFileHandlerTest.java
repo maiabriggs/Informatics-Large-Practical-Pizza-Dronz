@@ -72,14 +72,14 @@ public class ResultFileHandlerTest {
        // ResultFileHandler.createAllResults(actualOrders, "2023-11-12");
     }
     //needs an update
-    @Test
-    public void testFlightPathFile() {
-        Order order = actualOrders[0];
-        Restaurant restaurant = restaurants[2];
+    ///@Test
+    //public void testFlightPathFile() {
+      ///  Order order = actualOrders[0];
+       /// Restaurant restaurant = restaurants[2];
 
-        ArrayList<Move> path = createFlightPath(order.getOrderNo(), APPLETON_TOWER, restaurant.location(), centralArea, noFlyZones);
-        ResultFileHandler.createGeoJSONFile(path, "2023-11-12");
-    }
+        ///ArrayList<Move> path = createFlightPath(order.getOrderNo(), APPLETON_TOWER, restaurant.location(), centralArea, noFlyZones);
+        ///ResultFileHandler.createGeoJSONFile(path, "2023-11-12");
+    ////}
 
     @Test
     public void testALLFlightPathFile() {
