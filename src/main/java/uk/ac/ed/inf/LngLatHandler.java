@@ -104,31 +104,31 @@ public class LngLatHandler implements LngLatHandling {
 
         //If it is not one of these directions
         else {
-            double distanceToLat = Math.asin(0.00015);
-            double distanceToLng = Math.acos(0.00015);
+            double distanceToLat = Math.abs(Math.sin(angle % 90)*0.00015);
+            double distanceToLng = Math.abs(Math.cos(angle % 90)*0.00015);
 
             //Between East and North
             if (angle < 90 && angle > 0) {
-                nextLng = distanceToLng + startPosition.lng();
-                nextLat = distanceToLat + startPosition.lat();
+                nextLng = startPosition.lng() + distanceToLng;
+                nextLat = startPosition.lat() + distanceToLat;
             }
 
             //Between North and West
             else if (angle > 90 && angle < 180) {
-                nextLng = distanceToLng - startPosition.lng();
-                nextLat = distanceToLat + startPosition.lat();
+                nextLng = startPosition.lng() - distanceToLng;
+                nextLat = startPosition.lat() + distanceToLat;
             }
 
             //Between West and South
             else if (angle > 180 && angle < 270) {
-                nextLng = distanceToLng - startPosition.lng();
-                nextLat = distanceToLat - startPosition.lat();
+                nextLng = startPosition.lng() - distanceToLng;
+                nextLat = startPosition.lat() - distanceToLat;
             }
 
             //Between South and East
             else {
-                nextLng = distanceToLng + startPosition.lng();
-                nextLat = distanceToLat - startPosition.lat();
+                nextLng = startPosition.lng() + distanceToLng;
+                nextLat = startPosition.lat() - distanceToLat;
             }
 
         }

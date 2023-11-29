@@ -12,6 +12,7 @@ import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.ac.ed.inf.NewFlightPathCalculator.calculateAllPaths;
 import static uk.ac.ed.inf.NewFlightPathCalculator.createFlightPath;
 
 public class ResultFileHandlerTest {
@@ -79,6 +80,13 @@ public class ResultFileHandlerTest {
         ArrayList<Move> path = createFlightPath(order.getOrderNo(), APPLETON_TOWER, restaurant.location(), centralArea, noFlyZones);
         ResultFileHandler.createGeoJSONFile(path, "2023-11-12");
     }
+
+    @Test
+    public void testALLFlightPathFile() {
+        ArrayList<Move> path = calculateAllPaths(actualOrders, restaurants, centralArea, noFlyZones);
+        ResultFileHandler.createGeoJSONFile(path, "2023-11-12");
+    }
+
 
 
 }

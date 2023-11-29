@@ -63,7 +63,7 @@ public class RestaurantValidator {
      * @param restaurants  - The list of operating restaurants
      * @return The restaurant the pizza is sold at
      */
-    public Restaurant findRestaurant(Pizza pizza, Restaurant[] restaurants) {
+    public static Restaurant findRestaurant(Pizza pizza, Restaurant[] restaurants) {
         Restaurant restaurant = null;
         for (int i = 0; i < restaurants.length; i++) {
             //Check which restaurant the pizza came from
