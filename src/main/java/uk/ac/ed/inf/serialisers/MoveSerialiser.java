@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import uk.ac.ed.inf.data.Move;
-import uk.ac.ed.inf.ilp.data.Order;
-
 import java.io.IOException;
 
 public class MoveSerialiser extends StdSerializer<Move> {
@@ -41,6 +39,15 @@ public class MoveSerialiser extends StdSerializer<Move> {
         jsonGenerator.writeStringField("angle", String.valueOf(move.getAngle()));
         jsonGenerator.writeEndObject();
 
+        //NextLongitude
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField("toLongitude", String.valueOf(move.getNextLngLat().lng()));
+        jsonGenerator.writeEndObject();
+
+        //NextLatitude
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField("toLatitude", String.valueOf(move.getNextLngLat().lat()));
+        jsonGenerator.writeEndObject();
 
     }
 }

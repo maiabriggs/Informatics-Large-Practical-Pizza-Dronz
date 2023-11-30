@@ -1,13 +1,11 @@
 package uk.ac.ed.inf.validation;
 
-import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
 import uk.ac.ed.inf.ilp.data.Pizza;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
 
 public class RestaurantValidator {
 
@@ -49,8 +47,8 @@ public class RestaurantValidator {
         Restaurant restaurant = findRestaurant(pizzas[0], restaurants);
 
         DayOfWeek[] openDays = restaurant.openingDays();
-        for (int i = 0; i < openDays.length; i++) {
-            if (openDays[i] == orderDay.getDayOfWeek()) {
+        for (DayOfWeek openDay : openDays) {
+            if (openDay == orderDay.getDayOfWeek()) {
                 return OrderValidationCode.NO_ERROR;
             }
         }
@@ -65,12 +63,12 @@ public class RestaurantValidator {
      */
     public static Restaurant findRestaurant(Pizza pizza, Restaurant[] restaurants) {
         Restaurant restaurant = null;
-        for (int i = 0; i < restaurants.length; i++) {
+        for (Restaurant value : restaurants) {
             //Check which restaurant the pizza came from
-            Pizza[] menu = restaurants[i].menu();
-            for (int m = 0; m < menu.length; m++) {
-                if (pizza.name().equals(menu[m].name())) {
-                    restaurant = restaurants[i];
+            Pizza[] menu = value.menu();
+            for (Pizza item : menu) {
+                if (pizza.name().equals(item.name())) {
+                    restaurant = value;
                     break;
                 }
             }

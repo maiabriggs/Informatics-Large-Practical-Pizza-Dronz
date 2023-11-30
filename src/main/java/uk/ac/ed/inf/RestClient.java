@@ -1,17 +1,13 @@
 package uk.ac.ed.inf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.ac.ed.inf.ilp.data.LngLat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.ac.ed.inf.ilp.data.NamedRegion;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.Console;
+
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 
 public class RestClient {
     public static final String RESTAURANT_URL = "/restaurants";

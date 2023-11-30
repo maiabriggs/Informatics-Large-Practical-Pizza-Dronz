@@ -22,11 +22,11 @@ public class Direction {
     public static final double ESE = 337.5;
 
     /**
+     * Gets all the direction angles
      * @return An array of all the direction angles
      */
     public static double[] getAllDirections() {
-        double[] directions = {EAST, ENE, NE, NNE, NORTH, NNW, NW, WNW, WEST, WSW, SW, SSW, SOUTH, SSE, SE, ESE};
-        return directions;
+        return new double[]{EAST, ENE, NE, NNE, NORTH, NNW, NW, WNW, WEST, WSW, SW, SSW, SOUTH, SSE, SE, ESE};
     }
 
 }

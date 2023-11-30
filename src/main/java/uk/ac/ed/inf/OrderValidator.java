@@ -1,16 +1,15 @@
 package uk.ac.ed.inf;
 
+import uk.ac.ed.inf.ilp.constant.OrderStatus;
+import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 import uk.ac.ed.inf.ilp.interfaces.OrderValidation;
-import uk.ac.ed.inf.ilp.constant.*;
-import uk.ac.ed.inf.ilp.data.*;
 import uk.ac.ed.inf.validation.CardValidator;
 import uk.ac.ed.inf.validation.PizzaValidator;
 import uk.ac.ed.inf.validation.RestaurantValidator;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class OrderValidator implements OrderValidation {
     @Override
@@ -44,15 +43,21 @@ public class OrderValidator implements OrderValidation {
     public static Order[] getValidatedOrders(Order[] ordersToValidate, Restaurant[] restaurants) {
         OrderValidator orderValidator = new OrderValidator();
 
-        for (int i = 0; i < ordersToValidate.length; i++) {
-            orderValidator.validateOrder(ordersToValidate[i], restaurants);
+        for (Order value : ordersToValidate) {
+            orderValidator.validateOrder(value, restaurants);
         }
 
-        Order[] orders = Arrays.stream(ordersToValidate)
+        return Arrays.stream(ordersToValidate)
                 .filter(order -> order.getOrderValidationCode() == OrderValidationCode.NO_ERROR)
-                .collect(Collectors.toList()).toArray(Order[]::new);
+                .toList().toArray(Order[]::new);
+    }
 
-        return orders;
+    /**
+     * Sets the order status of an order to 'DELIVERED'
+     * @param order The order that has been delivered
+     */
+    public static void orderDelivered(Order order) {
+        order.setOrderStatus(OrderStatus.DELIVERED);
     }
 
 }

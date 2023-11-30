@@ -6,15 +6,11 @@ import uk.ac.ed.inf.ilp.data.*;
 import uk.ac.ed.inf.validation.RestaurantValidator;
 import java.util.*;
 
-public class NewFlightPathCalculator {
-
+public class FlightPathCalculator {
     private static PriorityQueue<Move> openSet;
     private static ArrayList<Move> closedSet;
-
     private static Move betterMove;
-
     private static final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
-
     private static LngLatHandler lngLatHandler;
 
     /**
@@ -25,7 +21,7 @@ public class NewFlightPathCalculator {
      * @param noFly The no-fly zones
      * @return The calculated flight path
      */
-    public static ArrayList<Move> createFlightPath(String orderNo, LngLat start, LngLat end, NamedRegion[] noFly){
+    public static ArrayList<Move> calculateFlightPath(String orderNo, LngLat start, LngLat end, NamedRegion[] noFly, NamedRegion centralArea){
         lngLatHandler = new LngLatHandler();
         //We initialise the starting queue
         openSet = new PriorityQueue<>();
@@ -35,13 +31,13 @@ public class NewFlightPathCalculator {
         Move startMove = new Move(orderNo, start);
         openSet.add(startMove);
         System.out.println("...finding a path...");
-
         //While there are still nodes to visit.
         while (!openSet.isEmpty()){
             Move currMove = openSet.poll();
             LngLat curr = currMove.getCurrLngLat();
 
             for (Double direction : Direction.getAllDirections()) {
+                boolean valid = true;
                 LngLat neighbour = lngLatHandler.nextPosition(curr, direction);
                 Move neighbourMove = new Move(orderNo, neighbour);
                 neighbourMove.setAngle(direction);
@@ -52,7 +48,12 @@ public class NewFlightPathCalculator {
                     return tracePath(neighbourMove);
                 }
 
-                if (!isOnClosedSet(neighbourMove) && !inNoFly(noFly, neighbour)) {
+                //Check if left central area
+                if (!lngLatHandler.isInCentralArea(curr, centralArea) && lngLatHandler.isInCentralArea(neighbour, centralArea)) {
+                    valid = false;
+                }
+
+                if (!isOnClosedSet(neighbourMove) && !inNoFly(noFly, neighbour) && valid) {
                     neighbourMove.setG(currMove.getG() + 1);
                     neighbourMove.setH(lngLatHandler.distanceTo(end, neighbour));
                     //Calculate total
@@ -60,7 +61,6 @@ public class NewFlightPathCalculator {
 
                     //If there is a better way of getting to the neighbour
                     if (isLowerOnOpenSet(neighbourMove)) {
-
                         neighbourMove.setParent(betterMove);
                         neighbourMove.setG(betterMove.getG() + 1);
                         neighbourMove.setTotal(neighbourMove.getG() + neighbourMove.getH());
@@ -69,7 +69,6 @@ public class NewFlightPathCalculator {
                     else {
                         neighbourMove.setParent(currMove);
                         openSet.add(neighbourMove);
-
                     }
                 }
             }
@@ -111,7 +110,7 @@ public class NewFlightPathCalculator {
     }
 
     /**
-     * Traces the path back from the end to the beginning and reverses the path so it is in the correct order
+     * Traces the path back from the end to the beginning and reverses the path, so it is in the correct order
      * @param end The end node we are traversing back from
      * @return The path traversed
      */
@@ -119,8 +118,9 @@ public class NewFlightPathCalculator {
         ArrayList<Move> path = new ArrayList<>();
         Move curr = end;
         while (curr.parent() != null) {
-            path.add(curr);
+            curr.parent().setNextLngLat(curr.getCurrLngLat());
             curr = curr.parent();
+            path.add(curr);
         }
         path.add(curr);
 
@@ -130,10 +130,10 @@ public class NewFlightPathCalculator {
     }
 
     /**
-     *
+     * Creates a hover move for a given position
      * @param orderNo The order number of the order we are considering
      * @param position The position we want to hover at
-     * @return
+     * @return the hover move
      */
     public static Move hover(String orderNo, LngLat position) {
         Move hover = new Move(orderNo, position);
@@ -160,11 +160,11 @@ public class NewFlightPathCalculator {
     /**
      * Calculates all the flight paths in a list of orders
      * @param orders The list of orders
-     * @param restaurants
-     * @param noFlyZones
-     * @return
+     * @param restaurants The list of restaurants
+     * @param noFlyZones The list of no-fly zones
+     * @return The list of all flight paths
      */
-    public static ArrayList<Move>calculateAllPaths(Order[] orders, Restaurant[] restaurants, NamedRegion[] noFlyZones) {
+    public static ArrayList<Move>calculateAllPaths(Order[] orders, Restaurant[] restaurants, NamedRegion[] noFlyZones, NamedRegion centralArea) {
         ArrayList<Move> path = new ArrayList<>();
 
         //Stores the paths to restaurants we have found
@@ -172,14 +172,14 @@ public class NewFlightPathCalculator {
         ArrayList<Move> pathToRestaurant;
 
         for (Order order : orders) {
-            System.out.println("Onto next order!!!!!");
+            System.out.println("Finding flightpath for Order No: " + order.getOrderNo());
             //Find restaurant we are delivering to:
             Restaurant restaurant = RestaurantValidator.findRestaurant(order.getPizzasInOrder()[0], restaurants);
             if (pathsToRestaurants.containsKey(restaurant.name())) {
                 pathToRestaurant = pathsToRestaurants.get(restaurant.name());
             }
             else {
-                pathToRestaurant = createFlightPath(order.getOrderNo(), APPLETON_TOWER, restaurant.location(), noFlyZones);
+                pathToRestaurant = calculateFlightPath(order.getOrderNo(), APPLETON_TOWER, restaurant.location(), noFlyZones, centralArea);
 
                 //Adds it to the hashmap of stored routes
                 pathsToRestaurants.put(restaurant.name(), pathToRestaurant);
@@ -191,8 +191,8 @@ public class NewFlightPathCalculator {
             //Return and deliver
             path.addAll(pathToRestaurant);
             path.add(hover(order.getOrderNo(), APPLETON_TOWER));
+            OrderValidator.orderDelivered(order);
         }
         return path;
     }
-
 }

@@ -1,6 +1,4 @@
 package uk.ac.ed.inf.validation;
-
-import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
 import uk.ac.ed.inf.ilp.data.CreditCardInformation;
 import java.time.LocalDate;

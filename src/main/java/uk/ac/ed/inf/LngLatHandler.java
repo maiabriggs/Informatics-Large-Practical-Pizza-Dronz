@@ -2,11 +2,8 @@ package uk.ac.ed.inf;
 
 import uk.ac.ed.inf.ilp.data.LngLat;
 import uk.ac.ed.inf.ilp.data.NamedRegion;
-import uk.ac.ed.inf.ilp.data.Order;
-import uk.ac.ed.inf.ilp.data.Restaurant;
 import uk.ac.ed.inf.ilp.interfaces.LngLatHandling;
 
-import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;
 
 public class LngLatHandler implements LngLatHandling {
@@ -20,9 +17,8 @@ public class LngLatHandler implements LngLatHandling {
     public double distanceTo(LngLat startPosition, LngLat endPosition) {
         double distanceLng = endPosition.lng() - startPosition.lng();
         double distanceLat = endPosition.lat() - startPosition.lat();
-        double distanceBetween = sqrt((distanceLat*distanceLat) + (distanceLng*distanceLng));
 
-        return distanceBetween;
+        return sqrt((distanceLat*distanceLat) + (distanceLng*distanceLng));
     }
 
     /**Checks if start position is close to the other position.
@@ -34,12 +30,7 @@ public class LngLatHandler implements LngLatHandling {
     public boolean isCloseTo(LngLat startPosition, LngLat otherPosition) {
         double distanceTol = distanceTo(startPosition, otherPosition);
 
-        if (distanceTol < 0.00015) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return distanceTol < 0.00015;
     }
 
     /**Checks if a given position is in a given region.
@@ -59,15 +50,6 @@ public class LngLatHandler implements LngLatHandling {
             }
         }
         return (intersections % 2) == 1;
-    }
-
-    public boolean isInMultipleRegions(LngLat position, NamedRegion[] regions) {
-        for (NamedRegion region : regions) {
-            if (isInRegion(position, region)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**Calculates the next position of the drone.
@@ -132,7 +114,6 @@ public class LngLatHandler implements LngLatHandling {
             }
 
         }
-        LngLat position = new LngLat(nextLng, nextLat);
-        return position;
+        return new LngLat(nextLng, nextLat);
     }
 }

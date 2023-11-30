@@ -1,8 +1,6 @@
 package uk.ac.ed.inf.validation;
 
-import uk.ac.ed.inf.OrderValidator;
 import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
-import uk.ac.ed.inf.ilp.data.CreditCardInformation;
 import uk.ac.ed.inf.ilp.data.Pizza;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 
@@ -36,8 +34,8 @@ public class PizzaValidator {
      */
     private OrderValidationCode validateOrderTotal(int totalPrice, Pizza[] pizzas) {
         int pizzaTotal = 0;
-        for (int i = 0; i < pizzas.length; i++) {
-            pizzaTotal += pizzas[i].priceInPence();
+        for (Pizza pizza : pizzas) {
+            pizzaTotal += pizza.priceInPence();
         }
 
         if (pizzaTotal != (totalPrice - 100)) {
@@ -55,11 +53,11 @@ public class PizzaValidator {
      */
     private OrderValidationCode validatePizzas(Pizza[] pizzas, Restaurant[] restaurants) {
         List<Boolean> inMenu = new ArrayList<>();
-        for (int i = 0; i < pizzas.length; i++) {
-            for (int r = 0; r < restaurants.length; r++) {
-                Pizza[] menu = restaurants[r].menu();
-                for (int m = 0; m < menu.length; m++) {
-                    if (menu[m].name().equals(pizzas[i].name())) {
+        for (Pizza pizza : pizzas) {
+            for (Restaurant restaurant : restaurants) {
+                Pizza[] menu = restaurant.menu();
+                for (Pizza item : menu) {
+                    if (item.name().equals(pizza.name())) {
                         inMenu.add(true);
                     }
                 }

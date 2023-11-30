@@ -1,19 +1,11 @@
 package uk.ac.ed.inf;
 
-import uk.ac.ed.inf.OrderValidator;
-import uk.ac.ed.inf.RestClient;
 import uk.ac.ed.inf.data.Move;
-import uk.ac.ed.inf.ilp.constant.OrderValidationCode;
 import uk.ac.ed.inf.ilp.data.NamedRegion;
 import uk.ac.ed.inf.ilp.data.Order;
 import uk.ac.ed.inf.ilp.data.Restaurant;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 import static uk.ac.ed.inf.OrderValidator.getValidatedOrders;
 
@@ -29,17 +21,19 @@ public class PizzaDronzApp {
         String restWebsite = args[1];
         String date = args[0];
 
-        //Get information from REST
-        RestClient restClient = new RestClient();
-
         //Update Restaurants and Orders from REST
-        Restaurant[] restaurants = restClient.getRestaurants(restWebsite);
-        Order[] orders = restClient.getOrders(date, restWebsite);
-        NamedRegion centralArea = restClient.getCentralArea(restWebsite);
-        NamedRegion[] noFlyZones = restClient.noFlyZones(restWebsite);
+        Restaurant[] restaurants = RestClient.getRestaurants(restWebsite);
+        Order[] orders = RestClient.getOrders(date, restWebsite);
+        NamedRegion centralArea = RestClient.getCentralArea(restWebsite);
+        NamedRegion[] noFlyZones = RestClient.noFlyZones(restWebsite);
 
         //Validate Orders
         Order[] validatedOrders = getValidatedOrders(orders, restaurants);
 
+        ArrayList<Move> path = FlightPathCalculator.calculateAllPaths(validatedOrders, restaurants, noFlyZones, centralArea);
+
+        //Create the result files
+        ResultFileHandler.createAllResults(orders, path, date);
+        System.out.println("Program finished running");
     }
 }

@@ -77,6 +77,7 @@ public class ResultFileHandler {
         createResultDirectory();
         createDeliveriesFile(orders, date);
         createFlightPathFile(moves, date);
+        createGeoJSONFile(moves, date);
     }
 
     public static void createFlightPathFile(List<Move> moves, String date){
@@ -96,7 +97,7 @@ public class ResultFileHandler {
         }
 
         createFile(json, "resultfiles/flightpath-" + date + ".json");
-        System.out.println("flightpath file created");
+        System.out.println("Flightpath file created");
     }
 
     public static void createGeoJSONFile(List<Move> path, String date) {
@@ -137,11 +138,12 @@ public class ResultFileHandler {
 
         try {
             mapper.writeValue(new File ("resultfiles/flightpath-" + date + ".geojson"), geoJSON);
+            System.out.println("GeoJSON file created.");
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        //needs an update
+
     }
 
 

@@ -17,7 +17,6 @@ public class OrderSerialiser extends StdSerializer<Order> {
         super(t);
     }
 
-
     @Override
     public void serialize(Order order, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         //orderNo

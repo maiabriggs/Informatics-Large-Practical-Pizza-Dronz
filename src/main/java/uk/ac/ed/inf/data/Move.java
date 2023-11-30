@@ -9,7 +9,6 @@ public class Move implements Comparable<Move> {
     private LngLat nextLngLat;
 
     double total, g, h; //Total, cost estimate and heuristic cost estimate.
-
     Move parent; //The position we came from
 
 
@@ -21,7 +20,6 @@ public class Move implements Comparable<Move> {
         this.g = 0;
         this.h = 0;
     }
-
 
     public String getOrderNo() {
         return this.orderNo;
@@ -52,7 +50,7 @@ public class Move implements Comparable<Move> {
         return this.nextLngLat;
     }
 
-    public void setNextLngLat(LngLat nextLong) {
+    public void setNextLngLat(LngLat nextLngLat) {
         this.nextLngLat = nextLngLat;
     }
 

@@ -67,7 +67,7 @@ public class LngLatHandlerTest {
 
     @Test
     public void nextPosition() {
-        LngLat next = new LngLat( -3.186724, 55.944494);
+        LngLat next = new LngLat( -3.186874, 55.944644);
         LngLat found = lngLatHandler.nextPosition(appleTonTower, 90);
         assertEquals(next.lng(), found.lng(), 0.000000000001);
         assertEquals(next.lat(), found.lat(), 0.000000000001);
