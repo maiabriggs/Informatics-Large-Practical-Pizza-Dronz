@@ -14,7 +14,6 @@ public class FlightPathCalculatorTest {
 
     private Order order;
     private Restaurant[] restaurants;
-
     private NamedRegion centralArea;
     private NamedRegion[] noFlyZones;
     private static final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
@@ -46,6 +45,4 @@ public class FlightPathCalculatorTest {
     public void testCalculateFlightPath() {
         FlightPathCalculator.calculateFlightPath(order.getOrderNo(), APPLETON_TOWER, restaurants[3].location(), noFlyZones, centralArea);
     }
-
-    //TODO: Find better tests
 }

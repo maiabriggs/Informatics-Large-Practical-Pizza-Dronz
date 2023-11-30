@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class ResultFileHandler {
     private static final ObjectMapper mapper = new ObjectMapper();
 

@@ -2,22 +2,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
-import uk.ac.ed.inf.OrderValidator;
-import uk.ac.ed.inf.RestClient;
-import uk.ac.ed.inf.data.Move;
 import uk.ac.ed.inf.ilp.data.*;
 import uk.ac.ed.inf.ResultFileHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 import static uk.ac.ed.inf.FlightPathCalculator.calculateAllPaths;
 
 public class ResultFileHandlerTest {
-    private Order order;
     private final Restaurant[] restaurants = {new Restaurant("Civerinos Slice",new LngLat(-3.1912869215011597,55.945535152517735),
             new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY},
             new Pizza[]{new Pizza("Margarita",1000), new Pizza("Calzone",1400)}),
@@ -38,12 +33,8 @@ public class ResultFileHandlerTest {
     private NamedRegion[] noFlyZones;
     Order[] actualOrders;
 
-    private static final LngLat APPLETON_TOWER = new LngLat(-3.186874, 55.944494);
-
     @Before
     public void setUp() {
-        OrderValidator orderValidator = new OrderValidator();
-        RestClient restClient = new RestClient();
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
@@ -65,41 +56,35 @@ public class ResultFileHandlerTest {
 
     @Test
     public void testCreateAllResults() {
-        File delivery = new File("c:/resultfiles/deliveries-2023-11-12.json");
-        File flightpathJSON = new File("c:/resultfiles/flightpath-2023-11-12.json");
-        File flightpathGeoJSON = new File("c:/resultfiles/flightpath-2023-11-12.geojson");
+        String deliveryFilePath = "resultfiles/deliveries-2023-11-12.json";
+        String flightFilePath = "resultfiles/flightpath-2023-11-12.json";
+        String geoJsonFilePath = "resultfiles/flightpath-2023-11-12.geojson";
         ResultFileHandler.createAllResults(actualOrders, calculateAllPaths(actualOrders, restaurants, noFlyZones, centralArea), "2023-11-12");
 
-        assertTrue(delivery.exists());
-        assertTrue(flightpathJSON.exists());
-        assertTrue(flightpathGeoJSON.exists());
+        assertTrue(new File(deliveryFilePath).exists());
+        assertTrue(new File(flightFilePath).exists());
+        assertTrue(new File(geoJsonFilePath).exists());
     }
 
     @Test
-    public void testCreateDeliveryResults() {
-        File delivery = new File("c:/resultfiles/deliveries-2023-11-14.json");
-        ResultFileHandler.createDeliveriesFile(actualOrders, "2023-11-14");
-        System.out.println(delivery.exists());
-        assertTrue(delivery.exists());
+    public void testDeliveriesFile() {
+        ResultFileHandler.createDeliveriesFile(actualOrders, "2023-11-12");
+        String filePath = "resultfiles/deliveries-2023-11-12.json";
+        assertTrue(new File(filePath).exists());
     }
 
     @Test
-    public void testFlightPathJSONResults() {
-        File flightpathJSON = new File("c:/resultfiles/flightpath-2023-11-12.json");
+    public void testFlightPathFile() {
         ResultFileHandler.createFlightPathFile(calculateAllPaths(actualOrders, restaurants, noFlyZones, centralArea), "2023-11-12");
-        assertTrue(flightpathJSON.exists());
+        String filePath = "resultfiles/flightpath-2023-11-12.json";
+        assertTrue(new File(filePath).exists());
     }
 
     @Test
-    public void testFlightPathGeoJSONResults() {
-        File flightpathGeoJSON = new File("c:/resultfiles/flightpath-2023-11-12.json");
-        ResultFileHandler.createGeoJSONFile(calculateAllPaths(actualOrders, restaurants, noFlyZones, centralArea), "2023-11-12");
-        assertTrue(flightpathGeoJSON.exists());
+    public void testFlightPathGeoJSONFile() {
+        ResultFileHandler.createFlightPathFile(calculateAllPaths(actualOrders, restaurants, noFlyZones, centralArea), "2023-11-12");
+        String filePath = "resultfiles/flightpath-2023-11-12.geojson";
+        assertTrue(new File(filePath).exists());
     }
-
-
-
-
-
 
 }
