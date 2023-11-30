@@ -12,7 +12,24 @@ import java.net.URL;
 public class RestClient {
     public static final String RESTAURANT_URL = "/restaurants";
     public static final String ORDER_URL = "/orders";
-    public static ObjectMapper mapper = new ObjectMapper();
+    public static final ObjectMapper mapper = new ObjectMapper();
+
+    /**
+     * Check if the REST service is alive
+     * @param url The URL of the REST service
+     * @return true if the REST is alive.
+     */
+    public static boolean isAlive(String url) {
+        boolean isAlive;
+        try {
+            isAlive = mapper.readValue(new URL(url + "/isAlive"), boolean.class);
+            System.out.println("REST service is alive");
+        } catch (IOException e) {
+            isAlive = false;
+        }
+
+        return isAlive;
+    }
 
     /** Gets the list of restaurants from the web server
      * @return The List of restaurants
@@ -23,7 +40,7 @@ public class RestClient {
             restaurants = mapper.readValue(new URL(url + RESTAURANT_URL), Restaurant[].class);
             System.out.println("read all restaurants");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not retrieve restaurants from REST.");
         }
 
         return restaurants;
@@ -42,7 +59,7 @@ public class RestClient {
             orders = mapper.readValue(new URL(url + ORDER_URL + "/" + date), Order[].class);
             System.out.println("read all orders");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not retrieve orders from REST");
         }
 
         return orders;
@@ -54,18 +71,18 @@ public class RestClient {
             centralArea = mapper.readValue(new URL(url + "/centralArea"), NamedRegion.class);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not retrieve central area from REST");
         }
         return centralArea;
     }
 
-    public static NamedRegion[] noFlyZones(String url) {
+    public static NamedRegion[] getNoFlyZones(String url) {
         NamedRegion[] noFlyZones;
         try {
             noFlyZones = mapper.readValue(new URL(url + "/noFlyZones"), NamedRegion[].class);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not retrieve no-fly zones from REST");
         }
         return noFlyZones;
     }

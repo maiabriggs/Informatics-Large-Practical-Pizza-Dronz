@@ -66,12 +66,123 @@ public class LngLatHandlerTest {
     }
 
     @Test
-    public void nextPosition() {
+    public void nextPositionNorth() {
         LngLat next = new LngLat( -3.186874, 55.944644);
         LngLat found = lngLatHandler.nextPosition(appleTonTower, 90);
         assertEquals(next.lng(), found.lng(), 0.000000000001);
         assertEquals(next.lat(), found.lat(), 0.000000000001);
     }
 
+    @Test
+    public void nextPositionSouth() {
+        LngLat next = new LngLat( -3.186874, (55.944494 - 0.00015));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 270);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionEast() {
+        LngLat next = new LngLat( (-3.186874 + 0.00015), 55.944494);
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 0);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionWest() {
+        LngLat next = new LngLat( (-3.186874 - 0.00015), 55.944494);
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 180);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionENE() {
+        LngLat next = new LngLat((-3.186874 + Math.abs((Math.cos(22.5) * 0.00015))), (55.944494 + Math.abs((Math.sin(22.5) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 22.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionNE() {
+        LngLat next = new LngLat((-3.186874 + Math.abs((Math.cos(45) * 0.00015))), (55.944494 + Math.abs((Math.sin(45) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 45);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionNNW() {
+        LngLat next = new LngLat((-3.186874 - Math.abs((Math.cos(112.5 % 90) * 0.00015))), (55.944494 + Math.abs((Math.sin(112.5 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 112.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionNW() {
+        LngLat next = new LngLat((-3.186874 - Math.abs((Math.cos(135 % 90) * 0.00015))), (55.944494 + Math.abs((Math.sin(135 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 135);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionWNW() {
+        LngLat next = new LngLat((-3.186874 - Math.abs((Math.cos(147.5 % 90) * 0.00015))), (55.944494 + Math.abs((Math.sin(147.5 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 147.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionWSW() {
+        LngLat next = new LngLat((-3.186874 - Math.abs((Math.cos(202.5 % 90) * 0.00015))), (55.944494 - Math.abs((Math.sin(202.5 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 202.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionSW() {
+        LngLat next = new LngLat((-3.186874 - Math.abs((Math.cos(215 % 90) * 0.00015))), (55.944494 - Math.abs((Math.sin(215 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 215);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionSSW() {
+        LngLat next = new LngLat((-3.186874 - Math.abs((Math.cos(237.5 % 90) * 0.00015))), (55.944494 - Math.abs((Math.sin(237.5 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 237.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionSSE() {
+        LngLat next = new LngLat((-3.186874 + Math.abs((Math.cos(292.5 % 90) * 0.00015))), (55.944494 - Math.abs((Math.sin(292.5 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 292.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionSE() {
+        LngLat next = new LngLat((-3.186874 + Math.abs((Math.cos(315 % 90) * 0.00015))), (55.944494 - Math.abs((Math.sin(315 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 315);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
+
+    @Test
+    public void nextPositionESE() {
+        LngLat next = new LngLat((-3.186874 + Math.abs((Math.cos(337.5 % 90) * 0.00015))), (55.944494 - Math.abs((Math.sin(337.5 % 90) * 0.00015))));
+        LngLat found = lngLatHandler.nextPosition(appleTonTower, 337.5);
+        assertEquals(next.lng(), found.lng(), 0.000000000001);
+        assertEquals(next.lat(), found.lat(), 0.000000000001);
+    }
 
 }
