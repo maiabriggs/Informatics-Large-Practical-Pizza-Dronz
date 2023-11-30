@@ -10,10 +10,8 @@ import uk.ac.ed.inf.ResultFileHandler;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.List;
 
 import static uk.ac.ed.inf.NewFlightPathCalculator.calculateAllPaths;
-import static uk.ac.ed.inf.NewFlightPathCalculator.createFlightPath;
 
 public class ResultFileHandlerTest {
     private Order order;
@@ -83,7 +81,7 @@ public class ResultFileHandlerTest {
 
     @Test
     public void testALLFlightPathFile() {
-        ArrayList<Move> path = calculateAllPaths(actualOrders, restaurants, centralArea, noFlyZones);
+        ArrayList<Move> path = calculateAllPaths(actualOrders, restaurants, noFlyZones);
         ResultFileHandler.createGeoJSONFile(path, "2023-11-12");
     }
 
